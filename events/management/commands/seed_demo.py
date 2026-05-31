@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 from donations.models import DonationOption
 from events.models import Event
-from gift_certificates.models import GiftCertificate
+from gift_certificates.models import GiftCertificateOrder
 from monthly_giving.models import MonthlyGivingOption
 
 
@@ -41,7 +41,7 @@ class Command(BaseCommand):
         )
 
         for order, amount in enumerate((25, 50, 100, 250), start=1):
-            GiftCertificate.objects.update_or_create(
+            GiftCertificateOrder.objects.update_or_create(
                 name=f"${amount} Gift Certificate",
                 defaults={
                     "amount": Decimal(amount),
