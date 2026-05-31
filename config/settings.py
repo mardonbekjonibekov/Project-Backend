@@ -184,3 +184,9 @@ UNFOLD = {
     },
 }
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Cross-site session cookie settings
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
