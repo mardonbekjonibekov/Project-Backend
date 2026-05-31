@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 
 from django.core.management.base import BaseCommand
@@ -31,8 +31,8 @@ class Command(BaseCommand):
             defaults={
                 "starts_at": date(2026, 6, 17),
                 "ends_at": date(2026, 7, 11),
-                "short_description": "Have you ever wanted to safely punch someone in the face? Go behind the scenes of every production.",
-                "long_description": "A hands-on workshop introducing the fundamentals of stage combat, safety, rhythm, and theatrical storytelling.",
+                "short_description": "Have you ever wanted to safely punch someone in the face?",
+                "long_description": "A hands-on workshop introducing the fundamentals of stage combat.",
                 "price": Decimal("45.00"),
                 "visual_style": "workshop",
                 "display_order": 2,
@@ -40,23 +40,24 @@ class Command(BaseCommand):
             },
         )
 
-        for order, amount in enumerate((25, 50, 100, 250), start=1):
-            GiftCertificateOrder.objects.update_or_create(
-                name=f"${amount} Gift Certificate",
-                defaults={
-                    "amount": Decimal(amount),
-                    "description": "Give someone a flexible theatre experience they can use toward tickets.",
-                    "display_order": order,
-                    "is_active": True,
-                },
-            )
+        GiftCertificateOrder.objects.update_or_create(
+            from_name="Demo Sender",
+            defaults={
+                "to_name": "Demo Recipient",
+                "recipient_email": "demo@example.com",
+                "amount": Decimal("50.00"),
+                "message": "Enjoy the show!",
+                "send_to_type": "email",
+                "date_to_send": date.today() + timedelta(days=1),
+            },
+        )
 
         for order, amount in enumerate((10, 25, 50, 100), start=1):
             MonthlyGivingOption.objects.update_or_create(
                 title=f"${amount} Monthly Supporter",
                 defaults={
                     "amount": Decimal(amount),
-                    "description": "Sustain new work, workshops, and accessible theatre programs every month.",
+                    "description": "Sustain new work every month.",
                     "display_order": order,
                     "is_featured": amount == 50,
                     "is_active": True,
@@ -68,7 +69,7 @@ class Command(BaseCommand):
                 title=f"Donate ${amount}",
                 defaults={
                     "amount": Decimal(amount),
-                    "description": "Support bold theatre, artist development, and community programs.",
+                    "description": "Support bold theatre.",
                     "display_order": order,
                     "is_active": True,
                 },
