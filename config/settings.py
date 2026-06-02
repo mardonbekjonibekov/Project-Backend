@@ -1,11 +1,11 @@
 import os
 from pathlib import Path
-
+ 
 import dj_database_url
 from django.urls import reverse_lazy
-
+ 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+ 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-change-me")
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,0.0.0.0").split(",")
@@ -13,7 +13,7 @@ CSRF_TRUSTED_ORIGINS = os.environ.get(
     "DJANGO_CSRF_TRUSTED_ORIGINS",
     "http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000",
 ).split(",")
-
+ 
 INSTALLED_APPS = [
     "unfold",
     "django.contrib.admin",
@@ -30,11 +30,11 @@ INSTALLED_APPS = [
     "donations",
     "cart",
 ]
-
+ 
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",        # ← ENG BIRINCHI bo'lishi SHART
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -42,9 +42,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
+ 
 ROOT_URLCONF = "config.urls"
-
+ 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -59,51 +59,58 @@ TEMPLATES = [
         },
     },
 ]
-
+ 
 WSGI_APPLICATION = "config.wsgi.application"
-
+ 
 DATABASES = {
     "default": dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
         conn_max_age=600,
     )
 }
-
+ 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
-
+ 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "America/Chicago"
 USE_I18N = True
 USE_TZ = True
-
+ 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
-
+ 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "/admin/"
 LOGOUT_REDIRECT_URL = "/admin/login/"
-
+ 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
 }
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+ 
+# CORS — barcha originlarga ruxsat
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+ 
 UNFOLD = {
     "SITE_TITLE": "Lookingglass Owner Admin",
     "SITE_HEADER": "Lookingglass Theatre",
@@ -145,7 +152,7 @@ UNFOLD = {
                     {
                         "title": "Gift Certificates",
                         "icon": "redeem",
-                         "link": reverse_lazy("admin:gift_certificates_giftcertificateorder_changelist"),
+                        "link": reverse_lazy("admin:gift_certificates_giftcertificateorder_changelist"),
                     },
                     {
                         "title": "Monthly Giving",
@@ -183,10 +190,10 @@ UNFOLD = {
         ],
     },
 }
-CORS_ALLOW_ALL_ORIGINS = True
-
+ 
 # Cross-site session cookie settings
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
+ 
